@@ -26,6 +26,6 @@ jobs:
         cache: 'npm'
     - run: npm ci
     - run: npm run build --if-present
-    - run: npm i chromedriver@113 --save-dev
+    - run: npm i chromedriver@114.0.5735.134 --save-dev
     - run: npm install
     - run: npm run test
