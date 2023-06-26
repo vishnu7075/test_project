@@ -59,7 +59,7 @@ exports.config = {
         'browserName': 'chrome',
         'acceptInsecureCerts': true,
         'goog:chromeOptions': { args: ['--window-size=1920,1080', '--incognito', 
-        //'--headless',
+        '--headless',
     ] },
         // If outputDir is provided WebdriverIO can capture driver session logs
         // it is possible to configure which logTypes to include/exclude.
