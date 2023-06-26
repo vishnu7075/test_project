@@ -1,4 +1,5 @@
 let apiCalls;
+const logToFile = require("log-to-file");
 const allureReporter = require("@wdio/allure-reporter").default;
 const allure = require("allure-commandline");
 const fs = require("fs");
@@ -25,11 +26,18 @@ exports.config = {
   // then the current working directory is where your `package.json` resides, so `wdio`
   // will be called from there.
   //
-  specs: ["test/specs/qaWolf.spec.js"],
+  specs: ["./test/specs/**/*.js"],
   // Patterns to exclude.
   exclude: [
     // 'path/to/excluded/files'
   ],
+  suites: {
+		full_suite: ['./test/specs/**/*.js'],
+		//Path for Suite 1
+		suite1: ['./test/specs/**/*.js'],
+		//Path for Suite 2
+		suite2: ['./test/specs/**/*.js'],
+	},
   //
   // ============
   // Capabilities
@@ -52,21 +60,23 @@ exports.config = {
   // Sauce Labs platform configurator - a great tool to configure your capabilities:
   // https://saucelabs.com/platform/platform-configurator
   //
-  capabilities: [{
+  capabilities: [
+    {
+      // maxInstances can get overwritten per capability. So if you have an in-house Selenium
+      // grid with only 5 firefox instances available you can make sure that not more than
+      // 5 instances get started at a time.
+      'maxInstances': 5,
+      //
+      'browserName': "chrome",
+      'acceptInsecureCerts': true,
+      'goog:chromeOptions' : {
+args:[
+  '--window-size=1920,1080',
+  '--incognito',
+  '--headless',
+],
 
-    // maxInstances can get overwritten per capability. So if you have an in-house Selenium
-    // grid with only 5 firefox instances available you can make sure that not more than
-    // 5 instances get started at a time.
-    'maxInstances': 1,
-    //
-    'browserName': 'chrome',
-    'acceptInsecureCerts': true,
-    'goog:chromeOptions': {
-      args: ['--window-size=1920,1080',
-              '--headless', 
-        '--incognito',
-      ]
-    },
+      }
       // If outputDir is provided WebdriverIO can capture driver session logs
       // it is possible to configure which logTypes to include/exclude.
       // excludeDriverLogs: ['*'], // pass '*' to exclude all driver session logs
@@ -80,7 +90,7 @@ exports.config = {
   // Define all options that are relevant for the WebdriverIO instance here
   //
   // Level of logging verbosity: trace | debug | info | warn | error | silent
-  logLevel: "info",
+  logLevel: "silent",
   //
   // Set specific log levels per logger
   // loggers:
@@ -257,9 +267,9 @@ exports.config = {
   /**
    * Function to be executed before a test (in Mocha/Jasmine) starts.
    */
-  beforeTest: async function () {
-    await browser.maximizeWindow();
-    },
+  // beforeTest: async function (test, context) {
+  //   apiCalls = await browser.mock("**");
+  // },
   /**
    * Hook that gets executed _before_ a hook within the suite starts (e.g. runs before calling
    * beforeEach in Mocha)
