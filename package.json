@@ -16,7 +16,9 @@
         "wdio-chromedriver-service": "^8.0.0"
     },
     "scripts": {
-        "test": "wdio run wdio.conf.js"
+        "allureCombine": "node ./node_modules/allure-single-html-file-js/combine.js ./test/.artifacts/allure-report",
+        "test": "wdio run wdio.conf.js",
+        "openReport": "allure open test/.artifacts/allure-report"
     },
     "dependencies": {
         "allure-commandline": "^2.20.1",
